@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mujoco model="inverted_pendulum">
+  <compiler angle="radian"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="RK4"/>
+  <size nconmax="50" njmax="50" nstack="300000"/>
+
+  <default>
+    <joint damping="0.02"/>
+    <geom rgba="0.2 0.6 0.8 1"/>
+  </default>
+
+  <worldbody>
+    <!-- Visual ground grid (optional) -->
+    <geom name="ground" type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.9 0.9 0.9 1"/>
+
+    <!-- Hinge at the origin; pendulum initially pointing up along Z -->
+    <body name="pendulum" pos="0 0 0">
+      <joint name="hinge" type="hinge" axis="0 1 0" limited= "false"/>
+      <!-- 1 m long capsule (tip at z=1). Radius 0.03 m. Density sets mass automatically. -->
+      <geom name="rod" type="capsule" fromto="0 0 0  0 0 1.0" size="0.03" density="1200"/>
+      <!-- A small bob at the tip-->
+      <geom name="bob" type="sphere" pos="0 0 1.0" size="0.05" density="1800" rgba="0.8 0.3 0.2 1"/>
+      <site name="tip" pos="0 0 -1.0" size="0.01"/>  
+    </body>
+  </worldbody>
+
+<actuator>
+  <motor name="hinge_motor" joint="hinge" gear="5"/>
+</actuator>
+
+</mujoco>
